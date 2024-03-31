@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "737044940192",
+    "project_id": "apptoeic-a4ce0",
+    "storage_bucket": "apptoeic-a4ce0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:737044940192:android:d310c3099c2acb13b510c5",
+        "android_client_info": {
+          "package_name": "com.example.apptoeic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ0oFqwT0ih6fPuZAUOig54DCgm0wqpIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
