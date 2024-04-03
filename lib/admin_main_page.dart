@@ -1,11 +1,13 @@
 import 'package:apptoeic_admin/tab_bar_view/home_page.dart';
+import 'package:apptoeic_admin/tab_bar_view/practice_cate_page.dart';
 import 'package:apptoeic_admin/tab_bar_view/question_list_page.dart';
-import 'package:apptoeic_admin/tab_bar_view/tests_page.dart';
+import 'package:apptoeic_admin/tab_bar_view/testlevel_page.dart';
 import 'package:flutter/material.dart';
 import 'package:apptoeic_admin/utils/constColor.dart';
 
 class Admin extends StatefulWidget {
-  const Admin({Key? key}) : super(key: key);
+  final int index;
+  const Admin({Key? key, required this.index}) : super(key: key);
 
   @override
   _AdminState createState() => _AdminState();
@@ -14,17 +16,10 @@ class Admin extends StatefulWidget {
 class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  final _tabs = [
-    Tab(text: 'Tổng hợp'),
-    Tab(text: 'Đề thi'),
-    Tab(text: 'DM đề thi'),
-    Tab(text: 'Từ vựng'),
-    Tab(text: 'DM từ vựng'),
-  ];
 
   @override
   void initState() {
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
     super.initState();
   }
 
@@ -37,8 +32,8 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 0,
-      length: 5,
+      initialIndex: widget.index,
+      length: 6,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('ADMIN TOEIC'),
@@ -51,6 +46,7 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
               Tab(text: "Dashboard"),
               Tab(text: "Questions"),
               Tab(text: "Test level"),
+              Tab(text: "Practice cate"),
               Tab(text: "Vocabulary"),
               Tab(text: "Vocabulary type"),
             ],
@@ -60,7 +56,8 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
           children: <Widget>[
             SquareBoxPage(),
             QuestionListPage(),
-            TestsPage(),
+            TestLevelPage(),
+            PracticePage(),
             Center(
               child: Text("Từ vựng"),
             ),

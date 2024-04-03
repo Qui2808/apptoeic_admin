@@ -10,13 +10,12 @@ class Question {
   String? opC;
   String? opD;
   int? answer;
-  int? level;
-  int? love;
-  int? questionCate;
+  String? level;
+  String? practiceCate;
 
   Question({this.id, this.content, this.image, this.audio, this.opA,
-      this.opB, this.opC, this.opD, this.answer, this.level, this.love,
-      this.questionCate});
+      this.opB, this.opC, this.opD, this.answer, this.level,
+      this.practiceCate});
 
 
   Question.fromJson(Map<String, dynamic> json) {
@@ -30,8 +29,7 @@ class Question {
     opD = json['opD'];
     answer = json['answer'];
     level = json['level'];
-    love = json['love'];
-    questionCate = json['questionCate'];
+    practiceCate = json['practiceCate'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,8 +44,7 @@ class Question {
     data['opD'] = opD;
     data['answer'] = answer;
     data['level'] = level;
-    data['love'] = love;
-    data['questionCate'] = questionCate;
+    data['practiceCate'] = practiceCate;
     return data;
   }
 }

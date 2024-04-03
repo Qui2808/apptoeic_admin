@@ -1,8 +1,10 @@
 import 'package:apptoeic_admin/utils/constColor.dart';
+import 'package:apptoeic_admin/utils/dropdown_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/question.dart';
-import '../../utils/textFormField.dart';
+import '../../utils/data_helper.dart';
+import '../../utils/text_form_field.dart';
 
 class QuestionDetail extends StatefulWidget {
   final Question question;
@@ -19,9 +21,15 @@ class _QuestionDetailState extends State<QuestionDetail> {
   late TextEditingController _opBController;
   late TextEditingController _opCController;
   late TextEditingController _opDController;
-  late TextEditingController _answerController;
-  late TextEditingController _levelController;
-  late TextEditingController _cateController;
+
+  List<String> answer = ['1', '2', '3', '4'];
+  String selectedAnswer = '1';
+
+  List<String> levels = ['300 - 500', '500 - 700', '700 - 900'];
+  List<String> practices = ['Complete The Sentences', 'Text Completion', 'Reading Comprehension','Photographs', 'Question Response', 'TConversations'];
+
+  String selectedLevel = '300 - 500';
+  String selectedPractice = 'Complete The Sentences';
 
   bool _isEditing = false;
 
@@ -33,9 +41,9 @@ class _QuestionDetailState extends State<QuestionDetail> {
     _opBController = TextEditingController(text: widget.question.opB);
     _opCController = TextEditingController(text: widget.question.opC);
     _opDController = TextEditingController(text: widget.question.opD);
-    _answerController = TextEditingController(text: widget.question.answer.toString());
-    _levelController = TextEditingController(text: widget.question.level.toString());
-    _cateController = TextEditingController(text: widget.question.questionCate.toString());
+    //_answerController = TextEditingController(text: widget.question.answer.toString());
+    // selectedLevel = widget.question.level.toString();
+    // selectedPractice =  widget.question.questionCate.toString();
   }
 
   @override
@@ -45,28 +53,16 @@ class _QuestionDetailState extends State<QuestionDetail> {
     _opBController.dispose();
     _opCController.dispose();
     _opDController.dispose();
-    _answerController.dispose();
-    _levelController.dispose();
-    _cateController.dispose();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Question Detail'),
+        title: const Text('Question Detail'),
         backgroundColor: mainColor,
-        // actions: [
-        //   IconButton(
-        //     onPressed: () {
-        //       setState(() {
-        //         _isEditing = !_isEditing;
-        //       });
-        //     },
-        //     icon: Icon(_isEditing ? Icons.save : Icons.edit),
-        //   ),
-        // ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -77,46 +73,52 @@ class _QuestionDetailState extends State<QuestionDetail> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TextFormDetail(
+                  TextFormForEdit(
                       controller: _contentController,
                       isEditing: _isEditing,
                       label: "Content"),
-                  SizedBox(height: 16.0),
-                  TextFormDetail(
+                  const SizedBox(height: 16.0),
+                  TextFormForEdit(
                       controller: _opAController,
                       isEditing: _isEditing,
                       label: "Option A"),
-                  SizedBox(height: 16.0),
-                  TextFormDetail(
+                  const SizedBox(height: 16.0),
+                  TextFormForEdit(
                       controller: _opBController,
                       isEditing: _isEditing,
                       label: "Option B"),
-                  SizedBox(height: 16.0),
-                  TextFormDetail(
+                  const SizedBox(height: 16.0),
+                  TextFormForEdit(
                       controller: _opCController,
                       isEditing: _isEditing,
                       label: "Option C"),
-                  SizedBox(height: 16.0),
-                  TextFormDetail(
+                  const SizedBox(height: 16.0),
+                  TextFormForEdit(
                       controller: _opDController,
                       isEditing: _isEditing,
                       label: "Option D"),
-                  SizedBox(height: 16.0),
-                  TextFormDetail(
-                      controller: _answerController,
-                      isEditing: _isEditing,
-                      label: "Answer"),
-                  SizedBox(height: 16.0),
-                  TextFormDetail(
-                      controller: _levelController,
-                      isEditing: _isEditing,
-                      label: "Level"),
-                  SizedBox(height: 16.0),
-                  TextFormDetail(
-                      controller: _cateController,
-                      isEditing: _isEditing,
-                      label: "Category"),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
+                  DropdownButtonForEdit(
+                      lstObjects: answer,
+                      selectedObject: selectedAnswer,
+                      labelText: 'Answer',
+                      isEditing: _isEditing
+                  ),
+                  const SizedBox(height: 16.0),
+                  DropdownButtonForEdit(
+                      lstObjects: levels,
+                      selectedObject: selectedLevel,
+                      labelText: 'Level',
+                      isEditing: _isEditing
+                  ),
+                  const SizedBox(height: 16.0),
+                  DropdownButtonForEdit(
+                      lstObjects: practices,
+                      selectedObject: selectedPractice,
+                      labelText: 'Practice',
+                      isEditing: _isEditing
+                  ),
+                  const SizedBox(height: 16.0),
                 ],
               ),
             ),
@@ -136,7 +138,7 @@ class _QuestionDetailState extends State<QuestionDetail> {
                   SizedBox(width: MediaQuery.of(context).size.width * 0.12),
                   Expanded(
                     child: ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
+                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red.shade900)),
                       onPressed: _DeleteButtonOnClick,
                       child: Text('Delete'),
                     ),
@@ -159,6 +161,8 @@ class _QuestionDetailState extends State<QuestionDetail> {
       setState(() {
         _isEditing = !_isEditing;
       });
+      updateQuestion(widget.question.id!, _contentController.text, _opAController.text, _opBController.text, _opCController.text,
+          _opDController.text, int.parse(selectedAnswer), "Z6Ab07u7bWL9WJlRg9El", "OQ2oZSDQDIkHbNOnHrWT");
       print("Đã lưu");
     }
   }
@@ -172,7 +176,8 @@ class _QuestionDetailState extends State<QuestionDetail> {
       setState(() {
         _isEditing = !_isEditing;
       });
-      print("Đã lưu");
+      print("Đã xóa");
     }
   }
+
 }

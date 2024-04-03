@@ -20,22 +20,27 @@ class _QuestionListPageState extends State<QuestionListPage> {
     ReadDataFromFireStore();
   }
 
-  Future<void> ReadDataFromFireStore() async{
+  Future<void> ReadDataFromFireStore() async {
     final List<Question> lst = [];
-    await FirebaseFirestore.instance
-        .collection('questions')
-        .get()
-        .then((QuerySnapshot querySnapshot) {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('questions')
+          .get();
       querySnapshot.docs.forEach((doc) {
-        lst.add(Question.fromJson(doc.data() as Map<String, dynamic>));
+        try {
+          lst.add(Question.fromJson(doc.data() as Map<String, dynamic>));
+        } catch (e) {
+          print('Error parsing question data: $e');
+        }
       });
-    });
-    if(questions != lst){
       setState(() {
         questions = lst;
       });
+    } catch (e) {
+      print('Error getting questions from Firestore: $e');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +66,12 @@ class _QuestionListPageState extends State<QuestionListPage> {
                         'Question ' + (index + 1).toString(),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text(questions[index].content!),
+                      subtitle: questions[index].content != null ?
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(questions[index].content!, style: TextStyle(fontSize: 15),),
+                      )
+                          : const Text("---Listening---"),
                     ),
                   ),
                 ),
@@ -75,7 +85,7 @@ class _QuestionListPageState extends State<QuestionListPage> {
             child: FloatingActionButton(
               backgroundColor: mainColor,
               onPressed: () {
-                addQuestion();
+                nextScreen(context, UploadPage());
               },
               child: Icon(Icons.add),
             ),

@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:apptoeic_admin/HomePage.dart';
-import 'package:apptoeic_admin/admin_main_page.dart';
+import 'package:apptoeic_admin/login_page.dart';
 import 'package:apptoeic_admin/utils/next_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -18,18 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
 
     Timer(const Duration(seconds: 3), () {
-      // sp.isSignedIn == false
-      //     ? nextScreen(context, LoginScreen())
-      //     : nextScreen(context, const HomeScreen());
-      // print(sp.role);
-      // if (sp.role == 1) {
-      //   nextScreenReplace(context, const MainPageAdmin());
-      // } else if (sp.role == 2) {
-      //   nextScreenReplace(context, const MainPageStaff());
-      // } else {
-      //   nextScreenReplace(context, const MainPage());
-      // }
-       nextScreenReplace(context, Admin());
+       nextScreenReplace(context, Login());
     });
   }
 
@@ -39,11 +27,16 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Container(
             //color: Color.fromRGBO(117, 132, 103, 1),
             color: Colors.white,
-            child: const Center(
-                child: Image(
-              image: AssetImage('assets/events/sukien1.jpg'),
-              height: 80,
-              width: 80,
-            ))));
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/plashscreen.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+        ));
   }
 }
