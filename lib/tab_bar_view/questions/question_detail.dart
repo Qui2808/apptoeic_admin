@@ -22,8 +22,8 @@ class _QuestionDetailState extends State<QuestionDetail> {
   late TextEditingController _opCController;
   late TextEditingController _opDController;
 
-  List<String> answer = ['1', '2', '3', '4'];
-  String selectedAnswer = '1';
+  List<String> answer = ['A', 'B', 'C', 'D'];
+  String selectedAnswer = 'A';
 
   List<String> levels = ['300 - 500', '500 - 700', '700 - 900'];
   List<String> practices = ['Complete The Sentences', 'Text Completion', 'Reading Comprehension','Photographs', 'Question Response', 'TConversations'];
@@ -158,12 +158,18 @@ class _QuestionDetailState extends State<QuestionDetail> {
         print(MediaQuery.of(context).size.width);
       });
     } else {
-      setState(() {
-        _isEditing = !_isEditing;
-      });
-      updateQuestion(widget.question.id!, _contentController.text, _opAController.text, _opBController.text, _opCController.text,
-          _opDController.text, int.parse(selectedAnswer), "Z6Ab07u7bWL9WJlRg9El", "OQ2oZSDQDIkHbNOnHrWT");
-      print("Đã lưu");
+      if(_contentController.text.trim() == null || _opAController.text.trim() == null || _opBController.text.trim() == null
+      || _opCController.text.trim() == null || _opDController.text.trim() == null){
+        const snackBar = SnackBar(content: Text("Information cannot be left blank"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }else{
+        setState(() {
+          _isEditing = !_isEditing;
+        });
+        updateQuestion(widget.question.id!, _contentController.text, _opAController.text, _opBController.text, _opCController.text,
+            _opDController.text, _getAnswerNumber(selectedAnswer), widget.question.level!, widget.question.practiceCate!);
+        print("Đã lưu");
+      }
     }
   }
 
@@ -177,6 +183,21 @@ class _QuestionDetailState extends State<QuestionDetail> {
         _isEditing = !_isEditing;
       });
       print("Đã xóa");
+    }
+  }
+
+  int _getAnswerNumber(String answer){
+    switch (answer) {
+      case 'A':
+        return 1;
+      case 'B':
+        return 2;
+      case 'C':
+        return 3;
+      case 'D':
+        return 4;
+      default:
+        return 1;
     }
   }
 

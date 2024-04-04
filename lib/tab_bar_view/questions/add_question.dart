@@ -52,8 +52,8 @@ class _UploadPageState extends State<UploadPage> {
     super.dispose();
   }
 
-  List<String> answer = ['1', '2', '3', '4'];
-  String selectedAnswer = '1';
+  List<String> answer = ['A', 'B', 'C', 'D'];
+  String selectedAnswer = 'A';
 
   List<String> levels = ['300 - 500', '500 - 700', '700 - 900'];
   String selectedLevel = '300 - 500';
@@ -295,9 +295,11 @@ class _UploadPageState extends State<UploadPage> {
         'opB': _opBController.text,
         'opC': _opCController.text,
         'opD': _opDController.text,
-        'answer': int.parse(_answerController.text.trim()),
-        'level': selectedLevel,
-        'questionCate': selectedPractice,
+        'answer': _getAnswerNumber(_answerController.text.trim()),
+        //'level': selectedLevel,
+        'level': "Z6Ab07u7bWL9WJlRg9El",
+        //'questionCate': selectedPractice,
+        'questionCate': "OQ2oZSDQDIkHbNOnHrWT",
         // 42
       }).then((DocumentReference docRef) {
         print("Question Added with ID: ${docRef.id}");
@@ -320,9 +322,11 @@ class _UploadPageState extends State<UploadPage> {
         'opB': "B",
         'opC': "C",
         'opD': "D",
-        'answer': int.parse(_answerController.text.trim()),
-        'level': selectedLevel,
-        'questionCate': selectedPractice,
+        'answer': _getAnswerNumber(_answerController.text.trim()),
+        //'level': selectedLevel,
+        'level': "Z6Ab07u7bWL9WJlRg9El",
+        //'questionCate': selectedPractice,
+        'questionCate': "OQ2oZSDQDIkHbNOnHrWT",
         // 42
       }).then((DocumentReference docRef) {
         print("Question Added with ID: ${docRef.id}");
@@ -330,6 +334,21 @@ class _UploadPageState extends State<UploadPage> {
         ques.doc(docRef.id).update({'id': docRef.id});
         nextScreenReplace(context, const Admin(index: 1));
       }).catchError((error) => print("Failed to add question: $error"));
+    }
+  }
+
+  int _getAnswerNumber(String answer){
+    switch (answer) {
+      case 'A':
+        return 1;
+      case 'B':
+        return 2;
+      case 'C':
+        return 3;
+      case 'D':
+        return 4;
+      default:
+        return 1;
     }
   }
 }
