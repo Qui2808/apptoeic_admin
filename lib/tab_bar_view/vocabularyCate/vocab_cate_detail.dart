@@ -1,48 +1,38 @@
-import 'package:apptoeic_admin/model/testlevel.dart';
+import 'package:apptoeic_admin/model/practice.dart';
+import 'package:apptoeic_admin/model/vocabcategory.dart';
 import 'package:apptoeic_admin/utils/constColor.dart';
-import 'package:apptoeic_admin/utils/data_helper.dart';
+import 'package:apptoeic_admin/utils/dropdown_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../../admin_main_page.dart';
-import '../../utils/next_screen.dart';
 import '../../utils/text_form_field.dart';
 
-class TestLevelDetail extends StatefulWidget {
-  final TestLevel testLevel;
+class VocabCateDetail extends StatefulWidget {
+  final VocabCategory category;
 
-  const TestLevelDetail({Key? key, required this.testLevel}) : super(key: key);
+  const VocabCateDetail({Key? key, required this.category}) : super(key: key);
 
   @override
-  _TestLevelDetailState createState() => _TestLevelDetailState();
+  _VocabCateDetailState createState() => _VocabCateDetailState();
 }
 
-class _TestLevelDetailState extends State<TestLevelDetail> {
-  CollectionReference testDb = FirebaseFirestore.instance.collection('testLevel');
+class _VocabCateDetailState extends State<VocabCateDetail> {
+  CollectionReference practiceDb = FirebaseFirestore.instance.collection('category');
 
-  late TextEditingController _titleController;
-  late TextEditingController _descriptionController;
-  late TextEditingController _scoreController;
-  late TextEditingController _levelController;
-
+  late TextEditingController _cateNameController;
 
   bool _isEditing = false;
 
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController(text: widget.testLevel.title);
-    _descriptionController = TextEditingController(text: widget.testLevel.description);
-    _scoreController = TextEditingController(text: widget.testLevel.score);
-    _levelController = TextEditingController(text: widget.testLevel.level.toString());
+    _cateNameController = TextEditingController(text: widget.category.cateName);
+
   }
 
   @override
   void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    _scoreController.dispose();
-    _levelController.dispose();
+    _cateNameController.dispose();
     super.dispose();
   }
 
@@ -51,7 +41,7 @@ class _TestLevelDetailState extends State<TestLevelDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Test Level Detail'),
+        title: const Text('VocabCategory Detail'),
         backgroundColor: mainColor,
       ),
       body: Column(
@@ -64,24 +54,9 @@ class _TestLevelDetailState extends State<TestLevelDetail> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextFormForEdit(
-                      controller: _titleController,
+                      controller: _cateNameController,
                       isEditing: _isEditing,
-                      label: "Title"),
-                  const SizedBox(height: 16.0),
-                  TextFormForEdit(
-                      controller: _descriptionController,
-                      isEditing: _isEditing,
-                      label: "Description"),
-                  const SizedBox(height: 16.0),
-                  TextFormForEdit(
-                      controller: _scoreController,
-                      isEditing: _isEditing,
-                      label: "Score"),
-                  const SizedBox(height: 16.0),
-                  TextFormForEdit(
-                      controller: _levelController,
-                      isEditing: _isEditing,
-                      label: "Level"),
+                      label: "Name"),
                   const SizedBox(height: 16.0),
                 ],
               ),
@@ -124,31 +99,28 @@ class _TestLevelDetailState extends State<TestLevelDetail> {
       setState(() {
         _isEditing = !_isEditing;
       });
-      updateTestLevel(widget.testLevel.id!);
+      updateCategory(widget.category.cateId!);
       print("Đã lưu");
     }
   }
 
   void _deleteButtonOnClick() {
-    //deleteObject("testLevel", widget.testLevel.id!);
+    // deleteObject("category", widget.category.cateId!);
     // const snackBar = SnackBar(content: Text("Delete successful"));
     // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    // nextScreenReplace(context, Admin(index: 2));
+    // nextScreenReplace(context, Admin(index: 5));
   }
 
+  Future<void> updateCategory(String docId) {
+    CollectionReference testDb = FirebaseFirestore.instance.collection('category');
 
-  Future<void> updateTestLevel(String docId) {
     // Đặt docId là ID của bản ghi mà bạn muốn cập nhật
     return testDb.doc(docId).update({
-      'title': _titleController.text,
-      'description': _descriptionController.text,
-      'score': _scoreController.text,
-      'level': int.parse(_levelController.text),
+      'cateName': _cateNameController.text,
     }).then((_) {
       print("Question updated successfully");
     }).catchError((error) {
       print("Failed to update question: $error");
     });
   }
-
 }

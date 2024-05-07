@@ -22,7 +22,7 @@ class _SquareBoxPageState extends State<SquareBoxPage> {
     testLevelStream = FirebaseFirestore.instance.collection('testLevel').snapshots();
     practiceCateStream = FirebaseFirestore.instance.collection('PracticeCate').snapshots();
     vocabStream = FirebaseFirestore.instance.collection('vocab').snapshots();
-    vocabCateStream = FirebaseFirestore.instance.collection('vocabCate').snapshots();
+    vocabCateStream = FirebaseFirestore.instance.collection('category').snapshots();
   }
 
   @override

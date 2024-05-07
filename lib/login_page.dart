@@ -66,7 +66,7 @@ class _LoginState extends State<Login> {
                     height: 50,
                   ),
                   inputDecoration(
-                    hint: 'Enter your email',
+                    hint: 'Enter your username',
                     inputcontroller: userName,
                   ),
                   inputDecorationPassword(

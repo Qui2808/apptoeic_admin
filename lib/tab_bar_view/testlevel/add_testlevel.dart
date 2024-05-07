@@ -3,8 +3,11 @@ import 'package:apptoeic_admin/utils/constColor.dart';
 import 'package:apptoeic_admin/utils/text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
+import '../../admin_main_page.dart';
 import '../../utils/dropdown_button.dart';
+import '../../utils/next_screen.dart';
 
 class AddTestLevel extends StatefulWidget {
   const AddTestLevel({super.key});
@@ -60,9 +63,19 @@ class _AddTestLevelState extends State<AddTestLevel> {
                     controller: _scoreController,
                     label: "Score"),
                 const SizedBox(height: 16.0),
-                TextFormForAdd(
-                    controller: _levelController,
-                    label: "Level"),
+              TextFormField(
+                controller: _levelController,
+                keyboardType: TextInputType.number, // Kiểu nhập là số
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly], // Chỉ cho phép nhập số
+                maxLines: null, // Tự động xuống dòng khi văn bản quá dài
+                style: const TextStyle(
+                    color:Colors.black
+                ),
+                decoration: InputDecoration(
+                    labelText: "Level",
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(28.0),)
+                ),
+              ),
                 const SizedBox(height: 26.0),
                 ElevatedButton(
                   onPressed: _addTestLevel,
@@ -94,11 +107,12 @@ class _AddTestLevelState extends State<AddTestLevel> {
       'title': _titleController.text,
       'description': _descriptionController.text,
       'score': _scoreController.text,
-      'level': _levelController.text,
+      'level': int.parse(_levelController.text),
     }).then((DocumentReference docRef) {
       print("Test level Added with ID: ${docRef.id}");
       // Sau khi thêm, gán ID vào thuộc tính id của question
       testDb.doc(docRef.id).update({'id': docRef.id});
+      nextScreenReplace(context, const Admin(index: 2));
     }).catchError((error) => print("Failed to add test level: $error"));
   }
 }

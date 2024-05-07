@@ -1,18 +1,21 @@
-import 'package:apptoeic_admin/model/question.dart';
-import 'package:apptoeic_admin/tab_bar_view/questions/add_question.dart';
-import 'package:apptoeic_admin/tab_bar_view/questions/question_detail.dart';
+import 'package:apptoeic_admin/model/vocabcategory.dart';
+import 'package:apptoeic_admin/tab_bar_view/vocabularyCate/add_vocab_cate.dart';
+import 'package:apptoeic_admin/tab_bar_view/vocabularyCate/vocab_cate_detail.dart';
 import 'package:apptoeic_admin/utils/constColor.dart';
 import 'package:apptoeic_admin/utils/next_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class QuestionListPage extends StatefulWidget {
+
+class VocabCategoryPage extends StatefulWidget {
+  const VocabCategoryPage({super.key});
+
   @override
-  State<QuestionListPage> createState() => _QuestionListPageState();
+  State<VocabCategoryPage> createState() => _VocabCategoryPageState();
 }
 
-class _QuestionListPageState extends State<QuestionListPage> {
-  List<Question> questions = [];
+class _VocabCategoryPageState extends State<VocabCategoryPage> {
+  List<VocabCategory> lstCate = [];
 
   @override
   void initState() {
@@ -21,27 +24,22 @@ class _QuestionListPageState extends State<QuestionListPage> {
   }
 
   Future<void> readDataFromFireStore() async {
-    final List<Question> lst = [];
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('questions')
-
-          .get();
+    final List<VocabCategory> lst = [];
+    await FirebaseFirestore.instance
+        .collection('category')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        try {
-          lst.add(Question.fromJson(doc.data() as Map<String, dynamic>));
-        } catch (e) {
-          print('Error parsing question data: $e');
-        }
+        lst.add(VocabCategory.fromJson(doc.data() as Map<String, dynamic>));
       });
+    });
+
+    if (lstCate != lst) {
       setState(() {
-        questions = lst;
+        lstCate = lst;
       });
-    } catch (e) {
-      print('Error getting questions from Firestore: $e');
     }
   }
-
 
 
   @override
@@ -50,13 +48,13 @@ class _QuestionListPageState extends State<QuestionListPage> {
       body: Stack(
         children: [
           ListView.builder(
-            itemCount: questions.length,
+            itemCount: lstCate.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
                 child: InkWell(
                   onTap: (){
-                    nextScreen(context, QuestionDetail(question: questions[index]));
+                    nextScreen(context, VocabCateDetail(category: lstCate[index]));
                   },
                   child: Card(
                     elevation: 4, // Độ nổi của Card
@@ -65,15 +63,9 @@ class _QuestionListPageState extends State<QuestionListPage> {
                     ),
                     child: ListTile(
                       title: Text(
-                        'Question ' + (index + 1).toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        'Category ${index + 1}: ${lstCate[index].cateName!}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: questions[index].content != null ?
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(questions[index].content!, style: TextStyle(fontSize: 15),),
-                      )
-                          : const Text("---Listening---"),
                     ),
                   ),
                 ),
@@ -87,7 +79,7 @@ class _QuestionListPageState extends State<QuestionListPage> {
             child: FloatingActionButton(
               backgroundColor: mainColor,
               onPressed: () {
-                nextScreen(context, UploadPage());
+                nextScreen(context, AddVocabCate());
               },
               child: Icon(Icons.add),
             ),

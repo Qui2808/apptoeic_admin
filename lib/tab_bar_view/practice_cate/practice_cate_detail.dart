@@ -4,6 +4,9 @@ import 'package:apptoeic_admin/utils/dropdown_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../admin_main_page.dart';
+import '../../utils/data_helper.dart';
+import '../../utils/next_screen.dart';
 import '../../utils/text_form_field.dart';
 
 class PracticeDetail extends StatefulWidget {
@@ -117,16 +120,10 @@ class _PracticeDetailState extends State<PracticeDetail> {
   }
 
   void _deleteButtonOnClick() {
-    if (!_isEditing) {
-      setState(() {
-        _isEditing = !_isEditing;
-      });
-    } else {
-      setState(() {
-        _isEditing = !_isEditing;
-      });
-      print("Đã xóa");
-    }
+    // deleteObject('PracticeCate', widget.practice.idPracticeCate!);
+    // const snackBar = SnackBar(content: Text("Delete successful"));
+    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    // nextScreenReplace(context, Admin(index: 3));
   }
 
 }

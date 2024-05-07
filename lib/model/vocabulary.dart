@@ -1,25 +1,23 @@
 
 class Vocabulary {
   String? id;
-  String? en;
-  String? vn;
+  String? eng;
+  String? vie;
   String? spell;
-  String? love;
   String? example;
   String? image;
   String? vocabCate;
   String? audio;
 
 
-  Vocabulary(this.id, this.en, this.vn, this.spell, this.love, this.example,
+  Vocabulary(this.id, this.eng, this.vie, this.spell, this.example,
       this.image, this.vocabCate, this.audio);
 
   Vocabulary.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    en = json['en'];
-    vn = json['vn'];
+    id = json['vocabId'];
+    eng = json['eng'];
+    vie = json['vie'];
     spell = json['spell'];
-    love = json['love'];
     example = json['example'];
     image = json['image'];
     vocabCate = json['vocabCate'];
@@ -28,11 +26,10 @@ class Vocabulary {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['en'] = en;
-    data['vn'] = vn;
+    data['vocabId'] = id;
+    data['eng'] = eng;
+    data['vie'] = vie;
     data['spell'] = spell;
-    data['love'] = love;
     data['example'] = example;
     data['image'] = image;
     data['vocabCate'] = vocabCate;

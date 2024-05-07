@@ -2,6 +2,8 @@ import 'package:apptoeic_admin/tab_bar_view/home_page.dart';
 import 'package:apptoeic_admin/tab_bar_view/practice_cate_page.dart';
 import 'package:apptoeic_admin/tab_bar_view/question_list_page.dart';
 import 'package:apptoeic_admin/tab_bar_view/testlevel_page.dart';
+import 'package:apptoeic_admin/tab_bar_view/vocab_category_page.dart';
+import 'package:apptoeic_admin/tab_bar_view/vocabulary_page.dart';
 import 'package:flutter/material.dart';
 import 'package:apptoeic_admin/utils/constColor.dart';
 
@@ -58,12 +60,8 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
             QuestionListPage(),
             TestLevelPage(),
             PracticePage(),
-            Center(
-              child: Text("Từ vựng"),
-            ),
-            Center(
-              child: Text("Danh mục từ vựng"),
-            ),
+            VocabularyPage(),
+            VocabCategoryPage(),
           ],
         ),
       ),

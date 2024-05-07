@@ -64,15 +64,15 @@ class _TestLevelPageState extends State<TestLevelPage> {
                     child: ListTile(
                       title: Text(
                         lstTestLevel[index].title!,
-                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                       ),
-                      subtitle: Text(lstTestLevel[index].score!, style: TextStyle(color: Colors.white),),
+                      subtitle: Text(lstTestLevel[index].score!, style: const TextStyle(color: Colors.white),),
                     ),
                   ),
                 ),
               );
             },
-            padding: EdgeInsets.only(bottom: 80.0),
+            padding: const EdgeInsets.only(bottom: 80.0),
           ),
           Positioned(
             bottom: 24.0,

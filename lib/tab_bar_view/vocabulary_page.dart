@@ -1,21 +1,21 @@
-import 'package:apptoeic_admin/model/practice.dart';
-import 'package:apptoeic_admin/tab_bar_view/practice_cate/add_practice.dart';
-import 'package:apptoeic_admin/tab_bar_view/practice_cate/practice_cate_detail.dart';
+import 'package:apptoeic_admin/model/vocabulary.dart';
+import 'package:apptoeic_admin/tab_bar_view/vocabulary/add_vocabulary.dart';
+import 'package:apptoeic_admin/tab_bar_view/vocabulary/vocabulary_detail.dart';
 import 'package:apptoeic_admin/utils/constColor.dart';
 import 'package:apptoeic_admin/utils/next_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 
-class PracticePage extends StatefulWidget {
-  const PracticePage({super.key});
+class VocabularyPage extends StatefulWidget {
+  const VocabularyPage({super.key});
 
   @override
-  State<PracticePage> createState() => _PracticePageState();
+  State<VocabularyPage> createState() => _VocabularyPageState();
 }
 
-class _PracticePageState extends State<PracticePage> {
-  List<Practice> lstPractice = [];
+class _VocabularyPageState extends State<VocabularyPage> {
+  List<Vocabulary> lstVocab = [];
 
   @override
   void initState() {
@@ -24,19 +24,19 @@ class _PracticePageState extends State<PracticePage> {
   }
 
   Future<void> readDataFromFireStore() async {
-    final List<Practice> lst = [];
+    final List<Vocabulary> lst = [];
     await FirebaseFirestore.instance
-        .collection('PracticeCate')
+        .collection('vocab')
         .get()
         .then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
-        lst.add(Practice.fromJson(doc.data() as Map<String, dynamic>));
+        lst.add(Vocabulary.fromJson(doc.data() as Map<String, dynamic>));
       });
     });
 
-    if (lstPractice != lst) {
+    if (lstVocab != lst) {
       setState(() {
-        lstPractice = lst;
+        lstVocab = lst;
       });
     }
   }
@@ -48,13 +48,13 @@ class _PracticePageState extends State<PracticePage> {
       body: Stack(
         children: [
           ListView.builder(
-            itemCount: lstPractice.length,
+            itemCount: lstVocab.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.fromLTRB(8, 12, 8, 0),
                 child: InkWell(
                   onTap: (){
-                    nextScreen(context, PracticeDetail(practice: lstPractice[index]));
+                    nextScreen(context, VocabularyDetail(vocabulary: lstVocab[index]));
                   },
                   child: Card(
                     elevation: 4, // Độ nổi của Card
@@ -63,16 +63,16 @@ class _PracticePageState extends State<PracticePage> {
                     ),
                     child: ListTile(
                       title: Text(
-                        'Practice ${index + 1}: ${lstPractice[index].content!}',
+                        '${index + 1}- ${lstVocab[index].eng!}: ${lstVocab[index].vie!}',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      subtitle: Text('Type: ${lstPractice[index].type!}'),
+                      subtitle: Text(' ${lstVocab[index].spell!}'),
                     ),
                   ),
                 ),
               );
             },
-            padding: EdgeInsets.only(bottom: 80.0),
+            padding: const EdgeInsets.only(bottom: 80.0),
           ),
           Positioned(
             bottom: 24.0,
@@ -80,7 +80,7 @@ class _PracticePageState extends State<PracticePage> {
             child: FloatingActionButton(
               backgroundColor: mainColor,
               onPressed: () {
-                nextScreen(context, AddPractice());
+                nextScreen(context, AddVocabulary());
               },
               child: const Icon(Icons.add),
             ),

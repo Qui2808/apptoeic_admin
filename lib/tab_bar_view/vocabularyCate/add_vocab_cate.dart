@@ -9,15 +9,15 @@ import '../../admin_main_page.dart';
 import '../../utils/dropdown_button.dart';
 import '../../utils/next_screen.dart';
 
-class AddPractice extends StatefulWidget {
-  const AddPractice({super.key});
+class AddVocabCate extends StatefulWidget {
+  const AddVocabCate({super.key});
 
   @override
-  _AddPracticeState createState() => _AddPracticeState();
+  _AddVocabCateState createState() => _AddVocabCateState();
 }
 
-class _AddPracticeState extends State<AddPractice> {
-  CollectionReference testDb = FirebaseFirestore.instance.collection('PracticeCate');
+class _AddVocabCateState extends State<AddVocabCate> {
+  CollectionReference testDb = FirebaseFirestore.instance.collection('category');
 
   final TextEditingController _contentController = TextEditingController();
 
@@ -25,9 +25,6 @@ class _AddPracticeState extends State<AddPractice> {
   void initState() {
     super.initState();
   }
-
-  List<String> type = ['reading', 'listening'];
-  String selectedType = 'reading';
 
   @override
   void dispose() {
@@ -39,7 +36,7 @@ class _AddPracticeState extends State<AddPractice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Practice'), backgroundColor: mainColor,),
+      appBar: AppBar(title: const Text('Add Vocabulary Category'), backgroundColor: mainColor,),
       body: Padding(
         padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
         child: SingleChildScrollView(
@@ -49,16 +46,10 @@ class _AddPracticeState extends State<AddPractice> {
               children: [
                 TextFormForAdd(
                     controller: _contentController,
-                    label: "Content"),
-                const SizedBox(height: 16.0),
-                DropdownButtonForAdd(
-                  lstObjects: type,
-                  labelText: 'Type',
-                  selectedObject: selectedType,
-                ),
+                    label: "Name"),
                 const SizedBox(height: 26.0),
                 ElevatedButton(
-                  onPressed: _addPractice,
+                  onPressed: _AddVocabCate,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: mainColor,
                     minimumSize: Size(MediaQuery.of(context).size.width * 0.6, 40),
@@ -82,15 +73,14 @@ class _AddPracticeState extends State<AddPractice> {
     );
   }
 
-  Future<void> _addPractice() {
+  Future<void> _AddVocabCate() {
     return testDb.add({
-      'Content': _contentController.text,
-      'Type': selectedType,
+      'cateName': _contentController.text,
     }).then((DocumentReference docRef) {
-      print("Practice Added with ID: ${docRef.id}");
+      print("VocabCate Added with ID: ${docRef.id}");
       // Sau khi thêm, gán ID vào thuộc tính id của question
-      testDb.doc(docRef.id).update({'IDPracticeCate': docRef.id});
-      nextScreenReplace(context, const Admin(index: 3));
-    }).catchError((error) => print("Failed to add Practice: $error"));
+      testDb.doc(docRef.id).update({'cateId': docRef.id});
+      nextScreenReplace(context, const Admin(index: 5));
+    }).catchError((error) => print("Failed to add cate: $error"));
   }
 }
