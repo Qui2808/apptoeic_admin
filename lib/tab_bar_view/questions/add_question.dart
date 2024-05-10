@@ -314,7 +314,11 @@ class _UploadPageState extends State<UploadPage> {
   }
 
   Future<void> _addQuestion() async {
+    Timestamp currentTime = Timestamp.now();
     if (_checkTypePractice == false){
+      if(await _checkvalue1()){
+        return;
+      }
       return ques.add({
         'content': _contentController.text,
         'image': null,
@@ -326,6 +330,7 @@ class _UploadPageState extends State<UploadPage> {
         'answer': _getAnswerNumber(_answerController.text.trim()),
         'level': selectedLevel,
         'questionCate': selectedPractice,
+        'dateAdd': currentTime,
       }).then((DocumentReference docRef) {
         print("Question Added with ID: ${docRef.id}");
         // Sau khi thêm, gán ID vào thuộc tính id của question
@@ -334,11 +339,18 @@ class _UploadPageState extends State<UploadPage> {
       }).catchError((error) => print("Failed to add question: $error"));
     }
     else{
+      if (_image == null ||
+          _audio == null) {
+        const snackBar = SnackBar(content: Text("Image and Audio cannot be left blank"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        return;
+      }
       String? imageUrl = await uploadImageToStorage(_image!);
       print('Image URL: $imageUrl');
 
       String? audioUrl = await uploadAudioToStorage(_audio!);
       print('Audio URL: $audioUrl');
+
       return ques.add({
         'content': null,
         'image': imageUrl,
@@ -350,6 +362,7 @@ class _UploadPageState extends State<UploadPage> {
         'answer': _getAnswerNumber(_answerController.text.trim()),
         'level': selectedLevel,
         'questionCate': selectedPractice,
+        'dateAdd': currentTime,
       }).then((DocumentReference docRef) {
         print("Question Added with ID: ${docRef.id}");
         // Sau khi thêm, gán ID vào thuộc tính id của question
@@ -373,4 +386,19 @@ class _UploadPageState extends State<UploadPage> {
         return 1;
     }
   }
+
+  Future<bool> _checkvalue1() async {
+    if (_contentController.text.trim() == "" ||
+        _opAController.text.trim() == "" ||
+        _opBController.text.trim() == "" ||
+        _opCController.text.trim() == "" ||
+        _opDController.text.trim() == "") {
+      const snackBar =
+      SnackBar(content: Text("Information cannot be left blank"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      return true;
+    }
+    return false;
+  }
+
 }

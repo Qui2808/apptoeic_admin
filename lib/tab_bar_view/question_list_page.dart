@@ -25,7 +25,7 @@ class _QuestionListPageState extends State<QuestionListPage> {
     try {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('questions')
-
+          .orderBy('dateAdd', descending: true)
           .get();
       querySnapshot.docs.forEach((doc) {
         try {
